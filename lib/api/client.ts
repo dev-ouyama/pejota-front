@@ -1,9 +1,6 @@
-import { API_BASE_URL } from "./config";
 import { getToken } from "../auth/auth-storage";
 
-const normalizedBaseUrl = API_BASE_URL.endsWith("/")
-  ? `${API_BASE_URL}api`
-  : `${API_BASE_URL}/api`;
+const url = process.env.NEXT_PUBLIC_API_URL;
 
 type RequestOptions = Omit<RequestInit, "headers"> & {
   headers?: Record<string, string>;
@@ -11,18 +8,18 @@ type RequestOptions = Omit<RequestInit, "headers"> & {
 
 export async function apiFetch<T>(
   path: string,
-  options: RequestOptions = {}
+  options: RequestOptions = {},
 ): Promise<T> {
   const token = getToken();
 
-  // If path is an absolute URL (http...) or a root-relative path (/...) use it as-is,
-  // otherwise prepend normalizedBaseUrl.
-  const url =
-    path.startsWith("http") || path.startsWith("/")
+  const isAbsolute = /^https?:\/\//i.test(path);
+  const fetchUrl = path.startsWith("/")
+    ? path
+    : isAbsolute
       ? path
-      : `${normalizedBaseUrl}${path}`;
+      : `${url?.replace(/\/$/, "") ?? ""}/${path.replace(/^\/+/, "")}`;
 
-  const res = await fetch(url, {
+  const res = await fetch(fetchUrl, {
     ...options,
     headers: {
       "Content-Type": "application/json",

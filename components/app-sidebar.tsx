@@ -15,6 +15,7 @@ import {
   PersonStanding,
   Shield,
   UserCog,
+  Table2,
 } from "lucide-react";
 
 import { useAuth } from "@/lib/auth/auth-context";
@@ -69,8 +70,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     return () => cancelAnimationFrame(id);
   }, []);
 
-  const showPrestadores = mounted ? can("ver prestador") : true;
-  const showPagamentos = mounted ? can("ver pagamentos") : true;
+  const showPrestadores = true;
+  // const showPrestadores = mounted ? can("ver prestador") : true;
+  const showPagamentos = true;
+  // const showPagamentos = mounted ? can("ver pagamentos") : true;
 
   // sample user block kept for footer
   const userSample = {
@@ -154,6 +157,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <a href="/centros-de-custo">
                   <LandPlot />
                   <span>Centros de Custo</span>
+                </a>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild>
+                <a href="/centros-de-custo">
+                  <Table2 />
+                  <span>Relatórios</span>
                 </a>
               </SidebarMenuButton>
             </SidebarMenuItem>

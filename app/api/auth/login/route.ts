@@ -3,9 +3,8 @@ import { NextResponse } from "next/server";
 export async function POST(req: Request) {
   const body = await req.json();
 
-  const backendBase =
-    (process.env.NEXT_PUBLIC_API_URL ?? "").replace(/\/$/, "") || "";
-  const backendUrl = `${backendBase}/api/login`;
+
+  const backendUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/login`;
 
   const res = await fetch(backendUrl, {
     method: "POST",
