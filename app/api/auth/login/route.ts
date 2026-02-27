@@ -4,7 +4,7 @@ export async function POST(req: Request) {
   const body = await req.json();
 
 
-  const backendUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/login`;
+  const backendUrl = `https://backpejota.naviatech.me/api/auth/login`;
 
   const res = await fetch(backendUrl, {
     method: "POST",

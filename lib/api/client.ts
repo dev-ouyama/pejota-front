@@ -1,6 +1,6 @@
 import { getToken } from "../auth/auth-storage";
 
-const url = process.env.NEXT_PUBLIC_API_URL;
+const url = `https://backpejota.naviatech.me`;
 
 type RequestOptions = Omit<RequestInit, "headers"> & {
   headers?: Record<string, string>;

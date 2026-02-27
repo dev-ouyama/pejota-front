@@ -23,6 +23,8 @@ type AuthContextValue = {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
+
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   // lazy initialize from localStorage to avoid setting state inside an effect
   const [token, setToken] = useState<string | null>(() => {
