@@ -56,6 +56,8 @@ export default function ProtectedLayout({
             <SidebarBreadcrumb />
           </div>
         </header>
+
+        <Separator />
         <main className="flex-1">{isReady ? children : null}</main>
       </SidebarInset>
     </SidebarProvider>

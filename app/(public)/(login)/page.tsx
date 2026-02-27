@@ -27,7 +27,8 @@ export default function LoginPage() {
       const data = await login(email, password);
       saveAuth(data.token, data.user);
       router.push("/dashboard");
-    } catch {
+    } catch (error) {
+      console.error("Login failed:", error);
       setLoading(false);
       alert("Login inválido");
     }
@@ -58,7 +59,7 @@ export default function LoginPage() {
 
         <div className="self-end text-right justify-end">
           {loading ? (
-            <Button type="submit">
+            <Button disabled type="submit">
               Entrar <Spinner />
             </Button>
           ) : (
