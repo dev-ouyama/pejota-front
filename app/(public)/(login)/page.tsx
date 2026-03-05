@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { login } from "@/lib/auth/auth.api";
+import { useAuth } from "@/lib/auth/auth-provider";
 import { useRouter } from "next/navigation";
 
 // UI Components
@@ -15,6 +16,7 @@ import { Spinner } from "@/components/ui/spinner";
 
 export default function LoginPage() {
   const router = useRouter();
+  const { refresh } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -24,16 +26,16 @@ export default function LoginPage() {
     e.preventDefault();
 
     try {
-        await login(email, password);
-        router.replace("/dashboard");
-
+      await login(email, password);
+      // update auth context immediately so protected layout doesn't redirect back
+      refresh();
+      router.replace("/dashboard");
     } catch (error) {
       console.error("Login failed:", error);
-      setLoading(false);
       alert("Login inválido");
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
 
   }
 

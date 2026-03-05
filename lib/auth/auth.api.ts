@@ -7,7 +7,11 @@ type LoginResponse = {
 };
 
 export async function login(email: string, password: string) {
-  const data = await api<LoginResponse>("auth/login", {
+  /*   const data = await api<LoginResponse>("auth/login", {
+    method: "POST",
+    body: JSON.stringify({ email, password }),
+  }); */
+  const data = await api<LoginResponse>("session", {
     method: "POST",
     body: JSON.stringify({ email, password }),
   });
@@ -15,8 +19,4 @@ export async function login(email: string, password: string) {
   setToken(data.access_token);
 
   return data.access_token;
-}
-
-export function getCurrentUser() {
-  return api("auth/me");
 }

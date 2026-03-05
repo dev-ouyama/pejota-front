@@ -24,30 +24,15 @@ export default function ProtectedLayout({
 
   // ready flag for client-only auth check to avoid hydration mismatch
   // and flicker of protected content on initial load
-  const [isReady, setIsReady] = useState(false);
-  useEffect(() => {
-    setIsReady(true);
-  }, []);
-
-  /* Auth guard */
-  /* If not authenticated, redirect to home */
   useEffect(() => {
     if (!loading && !user) {
       router.replace("/");
     }
   }, [user, loading, router]);
 
-  if (loading) {
-    return null; // or a loader
-  }
-
-  if (!user) {
+  if (loading || !user) {
     return null;
   }
-  /* Flicker guard */
-  /*   if (!isReady || !user) {
-    return null;
-  } */
 
   return (
     <SidebarProvider>
@@ -65,7 +50,7 @@ export default function ProtectedLayout({
         </header>
 
         <Separator />
-        <main className="flex-1">{isReady ? children : null}</main>
+        <main className="flex-1">{children}</main>
       </SidebarInset>
     </SidebarProvider>
   );

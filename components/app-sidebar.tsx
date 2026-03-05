@@ -1,6 +1,9 @@
 "use client";
 
 import * as React from "react";
+
+import Link from "next/link";
+
 import {
   User,
   Users,
@@ -109,28 +112,31 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
-                <a href="/dashboard">
+                <Link href="/dashboard">
                   <CircleGauge />
                   <span>Dashboard</span>
-                </a>
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
 
             {showPrestadores && (
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
-                  <a href="/prestadores">
+                  <Link href="/prestadores">
                     <Users />
                     <span>Prestadores</span>
-                  </a>
+                  </Link>
                 </SidebarMenuButton>
 
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <SidebarMenuAction asChild>
-                      <a href="/prestadores/novo" aria-label="Novo prestador">
+                      <Link
+                        href="/prestadores/novo"
+                        aria-label="Novo prestador"
+                      >
                         <PlusSquare />
-                      </a>
+                      </Link>
                     </SidebarMenuAction>
                   </TooltipTrigger>
                   <TooltipContent>
@@ -142,28 +148,28 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
-                <a href="/notas-fiscais">
+                <Link href="/notas-fiscais">
                   <Receipt />
                   <span>Notas fiscais</span>
-                </a>
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
 
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
-                <a href="/centros-de-custo">
+                <Link href="/centros-de-custo">
                   <LandPlot />
                   <span>Centros de Custo</span>
-                </a>
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
 
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
-                <a href="/centros-de-custo">
+                <Link href="/centros-de-custo">
                   <Table2 />
                   <span>Relatórios</span>
-                </a>
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
@@ -183,25 +189,25 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   <SidebarMenuSub>
                     <SidebarMenuSubItem>
                       <SidebarMenuSubButton asChild>
-                        <a href="/pagamentos/ordens">
+                        <Link href="/pagamentos/ordens">
                           <span>Ordens</span>
-                        </a>
+                        </Link>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
 
                     <SidebarMenuSubItem>
                       <SidebarMenuSubButton asChild>
-                        <a href="/pagamentos/status">
+                        <Link href="/pagamentos/status">
                           <span>Status</span>
-                        </a>
+                        </Link>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
 
                     <SidebarMenuSubItem>
                       <SidebarMenuSubButton asChild>
-                        <a href="/pagamentos/formas">
+                        <Link href="/pagamentos/formas">
                           <span>Tipos</span>
-                        </a>
+                        </Link>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
                   </SidebarMenuSub>
@@ -217,19 +223,19 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
-                <a href="/usuarios">
+                <Link href="/usuarios">
                   <UserCog />
                   <span>Usuários</span>
-                </a>
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
 
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
-                <a href="/centros-de-custo">
+                <Link href="/centros-de-custo">
                   <Shield />
                   <span>Perfis</span>
-                </a>
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>

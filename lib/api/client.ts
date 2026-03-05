@@ -1,8 +1,11 @@
 import { getToken } from "../auth/token";
 
-const API_BASE = "https://backpejota.naviatech.me/api";
+const API_BASE = "/api";
 
-export async function api<T>(path: string, options: RequestInit = {}): Promise<T> {
+export async function api<T>(
+  path: string,
+  options: RequestInit = {},
+): Promise<T> {
   const token = getToken();
 
   const res = await fetch(`${API_BASE}/${path}`, {

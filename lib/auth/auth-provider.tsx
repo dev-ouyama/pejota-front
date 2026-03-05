@@ -2,44 +2,46 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 import { getToken, removeToken } from "./token";
-import { getCurrentUser } from "./auth.api";
 
 type AuthContextType = {
-  user: any;
+  user: boolean;
   loading: boolean;
   logout: () => void;
+  refresh: () => void;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  const refresh = () => {
     const token = getToken();
+    setUser(!!token);
+    setLoading(false);
+  };
 
-    if (!token) {
-      setLoading(false);
-      return;
+  useEffect(() => {
+    // initial check
+    refresh();
+
+    // listen for token changes in other tabs/windows
+    function onStorage(e: StorageEvent) {
+      if (e.key === "token") refresh();
     }
 
-    getCurrentUser()
-      .then(setUser)
-      .catch(() => {
-        removeToken();
-        setUser(null);
-      })
-      .finally(() => setLoading(false));
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
   }, []);
 
   function logout() {
     removeToken();
-    setUser(null);
+    setUser(false);
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, logout }}>
+    <AuthContext.Provider value={{ user, loading, logout, refresh }}>
       {children}
     </AuthContext.Provider>
   );
