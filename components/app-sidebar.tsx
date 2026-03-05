@@ -18,7 +18,6 @@ import {
   Table2,
 } from "lucide-react";
 
-import { useAuth } from "@/lib/auth/auth-context";
 
 import { TakerSwitcher } from "@/components/taker-switcher";
 import { NavUser } from "@/components/nav-user";
@@ -60,8 +59,6 @@ import {
  * - Pagamentos -> collapsible with three mock entries.
  */
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { can } = useAuth();
-
   // avoid using client-only auth during SSR:
   // render full menu on server, then filter after client mount to avoid hydration mismatch
   const [mounted, setMounted] = React.useState(false);

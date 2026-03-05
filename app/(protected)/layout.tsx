@@ -1,8 +1,8 @@
 "use client";
 
-import { useAuth } from "@/lib/auth/auth-context";
+import { useAuth } from "@/lib/auth/auth-provider";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   SidebarProvider,
@@ -19,7 +19,7 @@ export default function ProtectedLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { isAuthenticated } = useAuth();
+  const { user, loading } = useAuth();
   const router = useRouter();
 
   // ready flag for client-only auth check to avoid hydration mismatch
@@ -32,15 +32,22 @@ export default function ProtectedLayout({
   /* Auth guard */
   /* If not authenticated, redirect to home */
   useEffect(() => {
-    if (isReady && !isAuthenticated) {
+    if (!loading && !user) {
       router.replace("/");
     }
-  }, [isReady, isAuthenticated, router]);
+  }, [user, loading, router]);
 
-  /* Flicker guard */
-  if (!isReady || !isAuthenticated) {
+  if (loading) {
+    return null; // or a loader
+  }
+
+  if (!user) {
     return null;
   }
+  /* Flicker guard */
+  /*   if (!isReady || !user) {
+    return null;
+  } */
 
   return (
     <SidebarProvider>

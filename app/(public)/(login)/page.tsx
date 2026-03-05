@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { login } from "@/lib/api/auth.api";
-import { saveAuth } from "@/lib/auth/auth-storage";
+import { login } from "@/lib/auth/auth.api";
 import { useRouter } from "next/navigation";
 
 // UI Components
@@ -10,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowRight } from "lucide-react";
 import { Spinner } from "@/components/ui/spinner";
+
 
 // TODO: save login info
 
@@ -24,9 +24,9 @@ export default function LoginPage() {
     e.preventDefault();
 
     try {
-      const data = await login(email, password);
-      saveAuth(data.token, data.user);
-      router.push("/dashboard");
+        await login(email, password);
+        router.replace("/dashboard");
+
     } catch (error) {
       console.error("Login failed:", error);
       setLoading(false);
@@ -34,6 +34,7 @@ export default function LoginPage() {
     }
 
     setLoading(false);
+
   }
 
   return (
