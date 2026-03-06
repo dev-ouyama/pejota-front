@@ -13,6 +13,10 @@ import {
   TableHead,
   TableCell,
 } from "@/components/ui/table";
+import { Separator } from "@/components/ui/separator";
+import { Check, Download, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
 
 export default function Page() {
   const params = useParams();
@@ -33,10 +37,9 @@ export default function Page() {
   const documents = provider.company_documents_status[0]?.documents || [];
 
   return (
-    <div className="p-8 flex flex-col gap-4">
+    <div className=" grid grid-cols-12 gap-4">
       {/* Provider */}
-
-      <div className="grid grid-cols-2 gap-4 w-full">
+      <div className="col-span-8 gap-4 grid grid-rows-1">
         <Card className="col-span-1">
           <CardHeader>
             <CardTitle>Prestador</CardTitle>
@@ -65,10 +68,10 @@ export default function Page() {
               <b>Estado Civil:</b> {provider.marital_status}
             </div>
           </CardContent>
-        </Card>
 
-        {/* Company */}
-        <Card className="col-span-1">
+          <Separator orientation="horizontal" />
+
+          {/* Company */}
           <CardHeader>
             <CardTitle>Empresa</CardTitle>
           </CardHeader>
@@ -102,67 +105,82 @@ export default function Page() {
         </Card>
       </div>
 
-      {/* Payment Methods */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Métodos de Pagamento</CardTitle>
-        </CardHeader>
-
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Banco</TableHead>
-                <TableHead>Agência</TableHead>
-                <TableHead>Conta</TableHead>
-                <TableHead>Tipo</TableHead>
-                <TableHead>PIX</TableHead>
-              </TableRow>
-            </TableHeader>
-
-            <TableBody>
-              {payments.map((p) => (
-                <TableRow key={p.id}>
-                  <TableCell>{p.bank_name}</TableCell>
-                  <TableCell>{p.agency}</TableCell>
-                  <TableCell>{p.account}</TableCell>
-                  <TableCell>{p.account_type}</TableCell>
-                  <TableCell>{p.pix}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
-
       {/* Documents */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Documentos</CardTitle>
-        </CardHeader>
+      <div className="col-span-4 grid grid-rows-1">
+        <Card>
+          <CardHeader>
+            <CardTitle>Documentos</CardTitle>
+          </CardHeader>
 
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Documento</TableHead>
-                <TableHead>Enviado</TableHead>
-                <TableHead>Atualizado</TableHead>
-              </TableRow>
-            </TableHeader>
+          <CardContent>
+            <Table className="select-none">
+              <TableBody>
+                {documents.map((doc) => (
+                  <TableRow key={doc.document_type_id}>
+                    <TableCell>
+                      {doc.sent ? (
+                        doc.name
+                      ) : (
+                        <span className="text-destructive">{doc.name}</span>
+                      )}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      {doc.path ? (
+                        <Button variant="ghost" size="sm" asChild>
+                          <a
+                            href={doc.path}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <Download />
+                          </a>
+                        </Button>
+                      ) : (
+                        ""
+                      )}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      </div>
 
-            <TableBody>
-              {documents.map((doc) => (
-                <TableRow key={doc.document_type_id}>
-                  <TableCell>{doc.name}</TableCell>
-                  <TableCell>{doc.sent ? "Sim" : "Não"}</TableCell>
-                  <TableCell>{doc.updated_at ?? "-"}</TableCell>
+      {/* Payment Methods */}
+      <div className="col-span-full col-start-1 grid grid-rows-1">
+        <Card>
+          <CardHeader>
+            <CardTitle>Métodos de Pagamento</CardTitle>
+          </CardHeader>
+
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Banco</TableHead>
+                  <TableHead>Agência</TableHead>
+                  <TableHead>Conta</TableHead>
+                  <TableHead>Tipo</TableHead>
+                  <TableHead>PIX</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
+              </TableHeader>
+
+              <TableBody>
+                {payments.map((p) => (
+                  <TableRow key={p.id}>
+                    <TableCell>{p.bank_name}</TableCell>
+                    <TableCell>{p.agency}</TableCell>
+                    <TableCell>{p.account}</TableCell>
+                    <TableCell>{p.account_type}</TableCell>
+                    <TableCell>{p.pix}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }

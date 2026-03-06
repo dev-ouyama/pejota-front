@@ -1,7 +1,6 @@
 import { api } from "../api/client";
-// TODO: format CNPJ and Document in the frontend, not in the backend, to avoid formatting issues when editing providers.
 
-/* ---------- TYPES ---------- */
+/* ---------- BASE TYPES ---------- */
 
 export type Provider = {
   id: number;
@@ -9,6 +8,7 @@ export type Provider = {
   email: string;
   phone: string;
   document: string;
+
   company: {
     id: number;
     social_reason: string;
@@ -21,6 +21,39 @@ export type Provider = {
     address: string;
   };
 };
+
+/* ---------- PAGINATION TYPES ---------- */
+
+export type PaginationLinks = {
+  first: string | null;
+  last: string | null;
+  prev: string | null;
+  next: string | null;
+};
+
+export type PaginationMeta = {
+  current_page: number;
+  from: number;
+  last_page: number;
+  path: string;
+  per_page: number;
+  to: number;
+  total: number;
+
+  links: {
+    url: string | null;
+    label: string;
+    active: boolean;
+  }[];
+};
+
+export type PaginatedProviders = {
+  data: Provider[];
+  links: PaginationLinks;
+  meta: PaginationMeta;
+};
+
+/* ---------- DETAILS ---------- */
 
 export type ProviderDetails = {
   id: number;
@@ -69,8 +102,8 @@ export type ProviderDetails = {
 
 /* ---------- API ---------- */
 
-export function getProviders() {
-  return api<{ data: Provider[] }>("providers");
+export function getProviders(page = 1) {
+  return api<PaginatedProviders>(`providers?page=${page}`);
 }
 
 export function getProvider(id: string) {

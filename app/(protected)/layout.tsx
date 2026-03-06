@@ -50,7 +50,7 @@ export default function ProtectedLayout({
         </header>
 
         <Separator />
-        <main className="flex-1">{children}</main>
+        <main className="flex-1 p-4">{children}</main>
       </SidebarInset>
     </SidebarProvider>
   );

@@ -14,25 +14,38 @@ import {
 import { Button } from "@/components/ui/button";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+import { VisuallyHidden } from "radix-ui";
 
 export default function PrestadoresPage() {
-  const [providers, setProviders] = useState<Provider[]>([]);
-  const [loading, setLoading] = useState(true);
+    const [providers, setProviders] = useState<Provider[]>([]);
+    const [page, setPage] = useState(1);
+    const [meta, setMeta] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    getProviders()
-      .then((res) => {
-        setProviders(res.data);
-      })
-      .finally(() => setLoading(false));
-  }, []);
+useEffect(() => {
+  setLoading(true);
 
+  getProviders(page)
+    .then((res) => {
+      setProviders(res.data);
+      setMeta(res.meta);
+    })
+    .finally(() => setLoading(false));
+}, [page]);
   if (loading) {
     return <SkeletonTable />;
   }
 
   return (
-    <div className="p-6 space-y-4">
+    <div className="flex h-full flex-col space-y-4 justify-between">
       <Table>
         <TableHeader>
           <TableRow>
@@ -67,6 +80,48 @@ export default function PrestadoresPage() {
           ))}
         </TableBody>
       </Table>
+
+      {meta && (
+        <div className="flex justify-end items-end select-none">
+          <Pagination>
+            <PaginationContent>
+              {/* Previous */}
+              <PaginationItem>
+                <PaginationPrevious
+                  onClick={() =>
+                    meta.current_page > 1 && setPage(meta.current_page - 1)
+                  }
+                  className={
+                    meta.current_page === 1
+                      ? "pointer-events-none opacity-50"
+                      : ""
+                  }
+                />
+              </PaginationItem>
+
+              {/* Current */}
+              <PaginationItem>
+                <PaginationLink isActive>{meta.current_page}</PaginationLink>
+              </PaginationItem>
+
+              {/* Next */}
+              <PaginationItem>
+                <PaginationNext
+                  onClick={() =>
+                    meta.current_page < meta.last_page &&
+                    setPage(meta.current_page + 1)
+                  }
+                  className={
+                    meta.current_page === meta.last_page
+                      ? "pointer-events-none opacity-50"
+                      : ""
+                  }
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </div>
+      )}
     </div>
   );
 }
